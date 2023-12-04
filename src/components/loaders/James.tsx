@@ -3,6 +3,7 @@ import { useRef, useEffect } from 'react'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
 import { useBox } from '@react-three/cannon'
+const james = new URL("../../james.glb",import.meta.url);
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -28,7 +29,7 @@ interface GLTFAction extends THREE.AnimationClip {
 
 export function Model(props: JSX.IntrinsicElements['group']) {
   const group = useRef<THREE.Group>(new THREE.Group)
-  const { nodes, materials, animations } = useGLTF('/james.glb') as GLTFResult
+  const { nodes, materials, animations } = useGLTF(james.href) as GLTFResult
   const { actions } = useAnimations<GLTFAction>(animations, group)
 
   useEffect(()=>{
@@ -39,7 +40,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
     mass: 1,
     position: [0, 0, 0], // Adjust the position as needed
     // args: [1, 1, 1], // Adjust the size of the box
-    type:"Static"
+    type:"Kinematic"
   }));
 
   return (
@@ -58,4 +59,4 @@ export function Model(props: JSX.IntrinsicElements['group']) {
   )
 }
 
-useGLTF.preload('/james.glb')
+useGLTF.preload(james.href)
