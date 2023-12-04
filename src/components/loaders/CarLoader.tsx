@@ -15,7 +15,7 @@ interface CarLoaderProps  {
 const CarLoader = ({modelPath,x,y,z}:CarLoaderProps) => {
 
     const [ref] = useBox(()=>({
-        mass:1,
+        mass:150,
         position:[x,y,z],
         args:[1,1,1],
         type:'Static'

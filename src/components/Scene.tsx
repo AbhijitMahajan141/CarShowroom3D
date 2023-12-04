@@ -53,6 +53,7 @@ const Scene = () => {
                 near={0.1} // default
                 far={100}
                 position={[0,1,1]}
+                
             />
 
             {/* Lights */}

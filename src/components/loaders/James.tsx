@@ -1,8 +1,12 @@
 import * as THREE from 'three'
 import { useRef, useEffect } from 'react'
-import { useGLTF, useAnimations } from '@react-three/drei'
+import { useGLTF, useAnimations, OrbitControls } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
 import { useBox } from '@react-three/cannon'
+import useInput from '../controls/useInput'
+import { useThree } from '@react-three/fiber'
+import { characterMovement } from '../controls/CharacterControls'
+
 const james = new URL("../../james.glb",import.meta.url);
 
 type GLTFResult = GLTF & {
@@ -28,22 +32,58 @@ interface GLTFAction extends THREE.AnimationClip {
 // type ContextType = Record<string, React.ForwardRefExoticComponent<JSX.IntrinsicElements['skinnedMesh'] | JSX.IntrinsicElements['bone']>>
 
 export function Model(props: JSX.IntrinsicElements['group']) {
+
+  const {forward,back,left,right,shift} = useInput(); // character movement
+
   const group = useRef<THREE.Group>(new THREE.Group)
   const { nodes, materials, animations } = useGLTF(james.href) as GLTFResult
-  const { actions } = useAnimations<GLTFAction>(animations, group)
-
-  useEffect(()=>{
-    actions.idle?.play()
-  })
+  
+  // const { actions } = useAnimations<GLTFAction>(animations, group)
+  const { actions }: { actions: Record<ActionName, THREE.AnimationAction | null> } = useAnimations<GLTFAction>(animations, group)
 
   const [ref] = useBox(() => ({
     mass: 1,
     position: [0, 0, 0], // Adjust the position as needed
-    // args: [1, 1, 1], // Adjust the size of the box
+    args: [1, 1, 1], // Adjust the size of the box
     type:"Kinematic"
   }));
 
+  // Character Movement Code
+  const currentAction = useRef<ActionName>("idle");
+  const controlsRef = useRef<typeof OrbitControls>();
+  const {camera} = useThree();// Returns the camera of the scene
+  
+
+  useEffect(()=>{
+    actions.idle?.play()
+    let action: ActionName;
+    if(forward || back || left || right){
+      action = "walk";
+      if(shift){
+        action = "run";
+      }
+    }else{
+      action = 'idle'
+    }
+
+    if(currentAction.current != action){
+      const nextActionToPlay = actions[action];
+      const current = actions[currentAction.current]
+      current?.fadeOut(0.2);
+      nextActionToPlay?.reset().fadeIn(0.2).play();
+      currentAction.current = action;
+    }
+  },
+  [forward,back,left,right,shift]
+  )
+
+  // useFrame((_,delta)=>{
+    characterMovement({currentAction,controlsRef,camera,group})
+  // })
+
   return (
+    <>
+    <OrbitControls ref={controlsRef as any}/>
     <group ref={group} {...props} dispose={null}>
       <group name="Scene" ref={ref as any}>
         <group name="Armature" rotation={[Math.PI / 2, 0, 0]} scale={0.01}>
@@ -56,6 +96,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
         </group>
       </group>
     </group>
+    </>
   )
 }
 
