@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 import * as THREE from 'three';
 import { Canvas } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei';
+// import { OrbitControls } from '@react-three/drei';
 import CarLoader from './loaders/CarLoader';
 import Loader from './loaders/Loader';
 import { Model } from './loaders/James';
@@ -39,6 +39,9 @@ const Scene = () => {
             gl.shadowMap.enabled = true;
             gl.shadowMap.type = THREE.PCFSoftShadowMap;
         }}
+        camera={{
+          fov: 80, near: 0.1, far: 100, position: [0,2,5]
+        }}
     >
         {/* Scene */}
         <scene background={new THREE.Color(0xffffff)}>
@@ -47,17 +50,16 @@ const Scene = () => {
             {/* <primitive object={new THREE.TextureLoader().load('./assets/img.png')} /> */}
 
             {/* Camera */}
-            <perspectiveCamera 
+            {/* <perspectiveCamera 
                 fov={80}
                 aspect={window.innerWidth / window.innerHeight}
                 near={0.1} // default
                 far={100}
-                position={[0,1,1]}
-                
-            />
+                position={[0,2,5]}
+            /> */}
 
             {/* Lights */}
-            <ambientLight color={0xffffff} intensity={0.5} />
+            {/* <ambientLight color={0xffffff} intensity={0.5} /> */}
             <directionalLight
                 color={0xffffff}
                 intensity={20}
@@ -69,15 +71,15 @@ const Scene = () => {
             {/* <primitive object={new THREE.CameraHelper(dirL)} /> */}
 
             <Suspense fallback={<Loader/>}>
-                {/* Orbit Controls */}
-                <OrbitControls
-                    // enableDamping
+                {/* Orbit Controls used in james Component. */}
+                {/* <OrbitControls
                     // Dont set this, camera does not follow the character, gets stuck.
-                    // minDistance={4}
-                    // maxDistance={6}
-                    // enablePan={false}
-                    // maxPolarAngle={1.4}
-                />
+                    enableDamping
+                    minDistance={4}
+                    maxDistance={6}
+                    enablePan={false}
+                    maxPolarAngle={1.4}
+                /> */}
                 
                 <Physics>
 

@@ -86,7 +86,14 @@ export function Model(props: JSX.IntrinsicElements['group']) {
     <group ref={group} {...props} dispose={null}>
       <group name="Scene" ref={ref as any}>
         <group name="Armature" rotation={[Math.PI / 2, 0, 0]} scale={0.01}>
-          <OrbitControls ref={controlsRef as any}/>
+          <OrbitControls 
+            ref={controlsRef as any}  
+            enableDamping
+            minDistance={4}
+            maxDistance={6}
+            enablePan={false}
+            maxPolarAngle={1.4}
+          />
           <primitive object={nodes.mixamorig9Hips} />
           <group name="Ch06">
             <skinnedMesh name="Mesh001" geometry={nodes.Mesh001.geometry} material={materials['Ch06_body.001']} skeleton={nodes.Mesh001.skeleton} castShadow={true} receiveShadow />
