@@ -43,11 +43,10 @@ export function Model(props: JSX.IntrinsicElements['group']) {
 
   const [ref] = useBox(() => ({
     mass: 1,
-    position: [0, 0, 0], // Adjust the position as needed
-    args: [1, 1, 1], // Adjust the size of the box
-    type:"Kinematic"
+    args: [0.5, 0.5, 0.5], // Adjust the size of the box
+    type:"Kinematic",
   }));
-
+  
   // Character Movement Code
   const currentAction = useRef<ActionName>("idle");
   const controlsRef = useRef<typeof OrbitControls>();
@@ -77,9 +76,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
   [forward,back,left,right,shift]
   )
 
-  // useFrame((_,delta)=>{
     characterMovement({currentAction,controlsRef,camera,group})
-  // })
 
   return (
     // <>
@@ -94,7 +91,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
             enablePan={false}
             maxPolarAngle={1.4}
           />
-          <primitive object={nodes.mixamorig9Hips} />
+          <primitive object={nodes.mixamorig9Hips}  />
           <group name="Ch06">
             <skinnedMesh name="Mesh001" geometry={nodes.Mesh001.geometry} material={materials['Ch06_body.001']} skeleton={nodes.Mesh001.skeleton} castShadow={true} receiveShadow />
             <skinnedMesh name="Mesh001_1" geometry={nodes.Mesh001_1.geometry} material={materials['Ch06_eyelashes.001']} skeleton={nodes.Mesh001_1.skeleton} castShadow={true} receiveShadow />

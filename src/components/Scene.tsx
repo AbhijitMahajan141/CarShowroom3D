@@ -42,6 +42,7 @@ const Scene = () => {
         camera={{
           fov: 80, near: 0.1, far: 100, position: [0,2,5]
         }}
+        shadows
     >
         {/* Scene */}
         <scene background={new THREE.Color(0xffffff)}>
@@ -81,10 +82,13 @@ const Scene = () => {
                     maxPolarAngle={1.4}
                 /> */}
                 
-                <Physics>
+                <Physics gravity={[0,-9.81,0]}>
 
                     {/* Plane */}
                     <Plane/>
+
+                    {/* Load Character */}
+                    <Model />
 
                     {/* Load Cars */}
                     <group>
@@ -93,9 +97,6 @@ const Scene = () => {
                         <CarLoader modelPath={car3.href} x={2} y={0.8} z={-6} />
                         <CarLoader modelPath={car4.href} x={-2} y={0} z={-4} />
                     </group>
-
-                    {/* Load Character */}
-                    <Model />
 
                 </Physics>
             </Suspense>
