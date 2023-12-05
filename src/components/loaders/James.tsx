@@ -82,11 +82,11 @@ export function Model(props: JSX.IntrinsicElements['group']) {
   // })
 
   return (
-    <>
-    <OrbitControls ref={controlsRef as any}/>
+    // <>
     <group ref={group} {...props} dispose={null}>
       <group name="Scene" ref={ref as any}>
         <group name="Armature" rotation={[Math.PI / 2, 0, 0]} scale={0.01}>
+          <OrbitControls ref={controlsRef as any}/>
           <primitive object={nodes.mixamorig9Hips} />
           <group name="Ch06">
             <skinnedMesh name="Mesh001" geometry={nodes.Mesh001.geometry} material={materials['Ch06_body.001']} skeleton={nodes.Mesh001.skeleton} castShadow={true} receiveShadow />
@@ -96,7 +96,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
         </group>
       </group>
     </group>
-    </>
+    // </>
   )
 }
 

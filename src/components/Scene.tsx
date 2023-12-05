@@ -71,11 +71,12 @@ const Scene = () => {
             <Suspense fallback={<Loader/>}>
                 {/* Orbit Controls */}
                 <OrbitControls
-                    enableDamping
-                    minDistance={4}
-                    maxDistance={6}
-                    enablePan={false}
-                    maxPolarAngle={Math.PI / 2 - 0.5}
+                    // enableDamping
+                    // Dont set this, camera does not follow the character, gets stuck.
+                    // minDistance={4}
+                    // maxDistance={6}
+                    // enablePan={false}
+                    // maxPolarAngle={1.4}
                 />
                 
                 <Physics>
