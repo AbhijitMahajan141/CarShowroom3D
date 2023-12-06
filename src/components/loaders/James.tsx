@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { useRef, useEffect } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { useGLTF, useAnimations, OrbitControls } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
 import { useBox } from '@react-three/cannon'
@@ -31,7 +31,7 @@ interface GLTFAction extends THREE.AnimationClip {
 
 // type ContextType = Record<string, React.ForwardRefExoticComponent<JSX.IntrinsicElements['skinnedMesh'] | JSX.IntrinsicElements['bone']>>
 
-export function Model(props: JSX.IntrinsicElements['group']) {
+export const Model = React.memo((props: JSX.IntrinsicElements['group']) => {
 
   const {forward,back,left,right,shift} = useInput(); // character movement
 
@@ -51,7 +51,6 @@ export function Model(props: JSX.IntrinsicElements['group']) {
   const currentAction = useRef<ActionName>("idle");
   const controlsRef = useRef<typeof OrbitControls>();
   const {camera} = useThree();// Returns the camera of the scene
-  
 
   useEffect(()=>{
     actions.idle?.play()
@@ -76,17 +75,16 @@ export function Model(props: JSX.IntrinsicElements['group']) {
   [forward,back,left,right,shift]
   )
 
-    characterMovement({currentAction,controlsRef,camera,group})
+  characterMovement({currentAction,controlsRef,camera,group})
 
   return (
-    // <>
-    <group ref={group} {...props} dispose={null}>
+    <group ref={group} {...props} dispose={null} position={[0,0,2]}>
       <group name="Scene" ref={ref as any}>
         <group name="Armature" rotation={[Math.PI / 2, 0, 0]} scale={0.01}>
           <OrbitControls 
             ref={controlsRef as any}  
             enableDamping
-            minDistance={4}
+            minDistance={3}
             maxDistance={6}
             enablePan={false}
             maxPolarAngle={1.4}
@@ -100,8 +98,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
         </group>
       </group>
     </group>
-    // </>
   )
-}
+})
 
 useGLTF.preload(james.href)
