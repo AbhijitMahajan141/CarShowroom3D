@@ -2,9 +2,6 @@ import { useRef} from 'react'
 import { useLoader } from '@react-three/fiber'
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
-import {
-  useBox,
-} from '@react-three/cannon'
 import { PositionalAudio } from '@react-three/drei';
 
 interface CarLoaderProps  {
@@ -15,13 +12,6 @@ interface CarLoaderProps  {
     url:string
 }
 const CarLoader = ({modelPath,x,y,z,url}:CarLoaderProps) => {
-
-    const [ref] = useBox(()=>({
-        mass:150,
-        position:[x,y,z],
-        args:[2,2.3,5],
-        type:'Static'
-    }))
 
     const audioRef = useRef();
 
@@ -49,7 +39,7 @@ const CarLoader = ({modelPath,x,y,z,url}:CarLoaderProps) => {
     
     return (
     <group  onClick={handleCarClick}>
-      <primitive position={[x, y, z]} object={result.scene} ref={ref} />
+      <primitive position={[x, y, z]} object={result.scene} />
       {/* Add a PositionalAudio component */}
       <PositionalAudio
         url={url}

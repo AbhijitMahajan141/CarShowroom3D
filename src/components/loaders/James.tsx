@@ -2,7 +2,6 @@ import * as THREE from 'three'
 import React, { useRef, useEffect } from 'react'
 import { useGLTF, useAnimations, OrbitControls } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
-import { useBox } from '@react-three/cannon'
 import useInput from '../controls/useInput'
 import { useThree } from '@react-three/fiber'
 import { characterMovement } from '../controls/CharacterControls'
@@ -41,12 +40,6 @@ export const Model = React.memo((props: JSX.IntrinsicElements['group']) => {
   // const { actions } = useAnimations<GLTFAction>(animations, group)
   const { actions }: { actions: Record<ActionName, THREE.AnimationAction | null> } = useAnimations<GLTFAction>(animations, group)
 
-  const [ref] = useBox(() => ({
-    mass: 1,
-    args: [0.5, 0.5, 0.5], // Adjust the size of the box
-    type:"Kinematic",
-  }));
-  
   // Character Movement Code
   const currentAction = useRef<ActionName>("idle");
   const controlsRef = useRef<typeof OrbitControls>();
@@ -74,12 +67,12 @@ export const Model = React.memo((props: JSX.IntrinsicElements['group']) => {
   },
   [forward,back,left,right,shift]
   )
-
+  
   characterMovement({currentAction,controlsRef,camera,group})
 
   return (
-    <group ref={group} {...props} dispose={null} position={[0,0,2]}>
-      <group name="Scene" ref={ref as any}>
+    <group ref={group} {...props} dispose={null} >
+      <group name="Scene">
         <group name="Armature" rotation={[Math.PI / 2, 0, 0]} scale={0.01}>
           <OrbitControls 
             ref={controlsRef as any}  

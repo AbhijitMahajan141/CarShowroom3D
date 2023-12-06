@@ -5,10 +5,6 @@ import { Canvas } from '@react-three/fiber'
 import CarLoader from './loaders/CarLoader';
 import Loader from './loaders/Loader';
 import { Model } from './loaders/James';
-import {
-  Physics,
-  usePlane,
-} from '@react-three/cannon'
 
 const car1 = new URL("../../public/assets/aventador/scene.gltf",import.meta.url);
 const car2 = new URL("../../public/assets/aventador2/scene.gltf",import.meta.url);
@@ -18,13 +14,8 @@ const carSound1 = new URL('../../public/assets/sound/aventador_sound.mp3',import
 const carSound2 = new URL('../../public/assets/sound/urus_sound.mp3',import.meta.url);
 
 const Plane = () => {
-  const [ref] = usePlane(() => ({
-    rotation: [-Math.PI / 2, 0, 0], // Ensure the plane is horizontal
-    position: [0, 0, 0],
-  }));
-
   return (
-    <mesh ref={ref as any} receiveShadow={true}>
+    <mesh receiveShadow={true} rotation={[-Math.PI / 2, 0, 0]}>
       <planeGeometry args={[40, 40]} />
       <meshStandardMaterial color={0xd6d6d6} side={THREE.DoubleSide} />
     </mesh>
@@ -96,7 +87,6 @@ const Scene = () => {
             <SpotLight x={-2} y={5} z={-4} angleProp={true} />
             <SpotLight x={2} y={5} z={-4} angleProp={true} />
 
-          <Physics gravity={[0,-9.81,0]}>
             <Suspense fallback={<Loader/>}>
                 {/* Orbit Controls used in james Component. */}
                 {/* <OrbitControls
@@ -124,10 +114,7 @@ const Scene = () => {
                         <CarLoader modelPath={car3.href} x={2} y={0.8} z={-4} url={carSound2.href} />
                         <CarLoader modelPath={car4.href} x={-2} y={0} z={-2} url={carSound1.href} />
                     </group>
-
             </Suspense>
-          </Physics>
-          
         </scene>
     </Canvas>
   )
